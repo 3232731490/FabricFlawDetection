@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "dgSpecHash": "wsHxbkDIFQ65NnKfh7gN4THfCRf4SVHkrD0quu7jgoe/7cMlf+UEPh8wp7wOvbxGQsc1OvgeQmg2vJFF/+n5Uw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\32327\\Desktop\\C#\\FabricDetection\\FabricDetection\\FabricDetection.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\32327\\.nuget\\packages\\materialdesigncolors\\2.0.3\\materialdesigncolors.2.0.3.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\materialdesignthemes\\4.2.1\\materialdesignthemes.4.2.1.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\opencvsharp4\\4.5.3.20210817\\opencvsharp4.4.5.3.20210817.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\opencvsharp4.runtime.win\\4.5.3.20210817\\opencvsharp4.runtime.win.4.5.3.20210817.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\system.drawing.common\\5.0.2\\system.drawing.common.5.0.2.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\windowsapicodepack-core\\1.1.1\\windowsapicodepack-core.1.1.1.nupkg.sha512",
+    "C:\\Users\\32327\\.nuget\\packages\\windowsapicodepack-shell\\1.1.1\\windowsapicodepack-shell.1.1.1.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0-windows7.0”还原包“WindowsAPICodePack-Core 1.1.1”。此包可能与项目不完全兼容。",
+      "libraryId": "WindowsAPICodePack-Core",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8”而不是项目目标框架“net5.0-windows7.0”还原包“WindowsAPICodePack-Shell 1.1.1”。此包可能与项目不完全兼容。",
+      "libraryId": "WindowsAPICodePack-Shell",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    }
+  ]
+}

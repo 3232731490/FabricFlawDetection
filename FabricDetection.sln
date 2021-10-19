@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31727.386
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FabricDetection", "FabricDetection\FabricDetection.csproj", "{502989BF-1F6C-496E-98A3-D1701A6069D4}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "FabricFlawDetection", "FabricFlawDetection\FabricFlawDetection.vdproj", "{55789338-362E-432C-972A-1C3FE2A5BE6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{502989BF-1F6C-496E-98A3-D1701A6069D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{502989BF-1F6C-496E-98A3-D1701A6069D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{502989BF-1F6C-496E-98A3-D1701A6069D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{502989BF-1F6C-496E-98A3-D1701A6069D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55789338-362E-432C-972A-1C3FE2A5BE6D}.Debug|Any CPU.ActiveCfg = Debug
+		{55789338-362E-432C-972A-1C3FE2A5BE6D}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {387359FE-D469-4F3D-BBC5-E2820DA92977}
+	EndGlobalSection
+EndGlobal
