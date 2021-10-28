@@ -4,11 +4,14 @@ using System.Windows;
 using OpenCvSharp;
 using System.Xml;
 using System.IO;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace FabricDetection
 {
     public partial class MainWindow : System.Windows.Window
     {
+        Button prebtn = null;
         /// <summary>
         /// 退出系统
         /// </summary>
@@ -47,6 +50,11 @@ namespace FabricDetection
         /// <param name="e"></param>
         private void pre_Click(object sender, RoutedEventArgs e)
         {
+            if(this.myFile.Len == 0)
+            {
+                MessageBox.Show("当前文件夹中不含有图片文件");
+                return;
+            }
             if (this.myFile.Cur_Pos > 0)    // 判断目前是否是第一张图片
             {
                 // 选取上一个文件
@@ -72,6 +80,11 @@ namespace FabricDetection
         /// <param name="e"></param>
         private void next_Click(object sender, RoutedEventArgs e)
         {
+            if (this.myFile.Len == 0)
+            {
+                MessageBox.Show("当前文件夹中不含有图片文件");
+                return;
+            }
             if (this.myFile.Cur_Pos < this.myFile.Len-1)    // 判断目前是否为最后一张图片
             {
                 // 选取下一张
@@ -168,7 +181,14 @@ namespace FabricDetection
         /// <param name="e"></param>
         private void SelectFlaw_Click(object sender, RoutedEventArgs e)
         {
+            if(prebtn != null)
+            {
+                prebtn.Background = Brushes.YellowGreen;
+            }
+            prebtn = sender as Button;
+            prebtn.Background = Brushes.DarkGreen;
             painting = true;
+            deleting = false;
         }
 
         /// <summary>
@@ -178,7 +198,15 @@ namespace FabricDetection
         /// <param name="e"></param>
         private void Completed_Click(object sender, RoutedEventArgs e)
         {
+            if (prebtn != null)
+            {
+                prebtn.Background = Brushes.YellowGreen;
+            }
+            prebtn = sender as Button;
+            prebtn.Background = Brushes.DarkGreen;
             painting = false;
+            deleting = false;
+            moving = false;
         }
 
         /// <summary>
@@ -188,9 +216,16 @@ namespace FabricDetection
         /// <param name="e"></param>
         private void DeleteDraw_Click(object sender, RoutedEventArgs e)
         {
+            if (prebtn != null)
+            {
+                prebtn.Background = Brushes.YellowGreen;
+            }
+            prebtn = sender as Button;
+            prebtn.Background = Brushes.DarkGreen;
             MessageBox.Show("请框选您要删除的瑕疵框");
             this.painting = false;
             this.deleting = true;
+            moving = false;
         }
 
         /// <summary>
@@ -200,6 +235,17 @@ namespace FabricDetection
         /// <param name="e"></param>
         private void saveXML_Click(object sender, RoutedEventArgs e)
         {
+            if (prebtn != null)
+            {
+                prebtn.Background = Brushes.YellowGreen;
+            }
+            prebtn = sender as Button;
+            prebtn.Background = Brushes.DarkGreen;
+            if (myFile.Len == 0)
+            {
+                MessageBox.Show("当前未选中样本");
+                return;
+            }
             XmlDocument doc = new XmlDocument();    // 获取操作XML的doc元素
 
             XmlDeclaration xmldecl = doc.CreateXmlDeclaration("1.0", "utf-8", null);    // 设置xml文件头部信息
@@ -234,19 +280,37 @@ namespace FabricDetection
                 SPosition1.AppendChild(SPositionY);
                 SPosition1.AppendChild(SWidth);
                 SPosition1.AppendChild(SHeight);
+                XmlElement WindowWidth = doc.CreateElement("WINDOWWIDTH");
+                XmlElement WindowHeight = doc.CreateElement("WINDOWHEIGHT");
+                WindowWidth.InnerText = rect.WindowWidth.ToString();
+                WindowHeight.InnerText = rect.WindowHeight.ToString();
+                SPosition1.AppendChild(WindowWidth);
+                SPosition1.AppendChild(WindowHeight);
                 SPosition.AppendChild(SPosition1);
                 count++;
             }
             ele.AppendChild(SPosition);
+
             // 通过base路径组合完整路径
             string base_path = this.myFile.File_BasePath + "\\XML";
-            string img_path = base_path + "\\" + this.myFile.File_Name.Split(".")[0] + ".xml";
+            var names = this.myFile.File_Name.Split(".");
+            string temp_path = "";
+            for (int i= 0 ; i < names.Length-1; i++)
+            {
+                temp_path += names[i];
+                if (i < names.Length - 2)
+                    temp_path += "_";
+            }
+            string img_path = base_path + "\\" + temp_path + ".xml";
             if (!Directory.Exists(base_path))
             {
                 Directory.CreateDirectory(base_path);
             }
             doc.Save(img_path); // 写入磁盘
             MessageBox.Show("当前样本信息已保存至当前样本目录的XML文件夹下");
+            painting = false;
+            deleting = false;
+            moving = false;
         }
 
         /// <summary>
@@ -255,17 +319,27 @@ namespace FabricDetection
         private void read_XML()
         {
             rects.Clear();  // 先清空原有瑕疵信息
+            if (this.myFile.Len == 0)
+                return;
+            var names = this.myFile.File_Name.Split(".");
+            string temp_path = "";
+            for (int i = 0; i < names.Length - 1; i++)
+            {
+                temp_path += names[i];
+                if (i < names.Length - 2)
+                    temp_path += "_";
+            }
             string base_path = this.myFile.File_BasePath+"\\XML";
-            string img_path = base_path+"\\"+this.myFile.File_Name.Split(".")[0]+".xml";
+            string img_path = base_path+"\\"+temp_path+".xml";
             if (!Directory.Exists(base_path))
             {
-                this.ComboBox1.SelectedIndex = -1;
+                this.ComboBox1.SelectedIndex = 1;
                 Directory.CreateDirectory(base_path);
                 return;
             }
             if (!File.Exists(img_path))
             {
-                this.ComboBox1.SelectedIndex = -1;
+                this.ComboBox1.SelectedIndex = 1;
                 return;
             }
             XmlDocument doc = new XmlDocument();
@@ -277,7 +351,8 @@ namespace FabricDetection
 
             XmlNode SPosition = xn.SelectSingleNode("POSITION");
             XmlNodeList Postions = SPosition.ChildNodes;
-            foreach(XmlNode posion in Postions)
+            
+            foreach (XmlNode posion in Postions)
             {
                 XmlNode POSITIONX = posion.SelectSingleNode("POSITIONX");
                 XmlNode POSITIONY = posion.SelectSingleNode("POSITIONY");
@@ -287,8 +362,13 @@ namespace FabricDetection
                 r.Start =new System.Windows.Point( double.Parse(POSITIONX.InnerText),double.Parse(POSITIONY.InnerText));
                 r.Width = double.Parse(WIDTH.InnerText);
                 r.Height = double.Parse(HEIGHT.InnerText);
+                XmlNode WindowWidth = posion.SelectSingleNode("WINDOWWIDTH");
+                XmlNode WindowHeight = posion.SelectSingleNode("WINDOWHEIGHT");
+                r.WindowHeight = double.Parse(WindowHeight.InnerText);
+                r.WindowWidth = double.Parse(WindowWidth.InnerText);
                 rects.Add(r);
             }
+            
             Draw_Rect();    // 绘制瑕疵区域
         }
     }

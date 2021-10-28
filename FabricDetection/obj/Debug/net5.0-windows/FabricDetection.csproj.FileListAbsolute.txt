@@ -33,4 +33,4 @@ C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\bin\Debug\net5.0-windo
 C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\bin\Debug\net5.0-windows\runtimes\win-x86\native\opencv_videoio_ffmpeg453.dll
 C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\bin\Debug\net5.0-windows\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
 C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\bin\Debug\net5.0-windows\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
-C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\obj\Debug\net5.0-windows\FabricDetection.csproj.CopyComplete
+C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\obj\Debug\net5.0-windows\FabricDetection.csproj.AssemblyReference.cache

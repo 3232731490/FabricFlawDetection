@@ -22,12 +22,14 @@ namespace FabricDetection
         public MainWindow()
         {
             InitializeComponent();
+            this.SizeChanged += new System.Windows.SizeChangedEventHandler(MainWindow_Resize);  // 绑定窗口大小变化事件
             myFile = new MyFile() { File_BasePath = "" };
             // 前后端数据绑定
             this.CurFilePath.SetBinding(TextBox.TextProperty, new Binding("File_BasePath") { Source =  myFile}) ;
             this.fileName.SetBinding(TextBox.TextProperty, new Binding("File_Name") { Source = myFile});
             this.Img.SetBinding(Image.SourceProperty, new Binding("Image_Path") { Source = myFile });
             this.Gene_num.SetBinding(TextBox.TextProperty, new Binding("Genaration_num") {Source = myFile ,Mode = BindingMode.TwoWay });
+            this.Img.MouseMove += Img_MouseMove;
         }
         /// <summary>
         /// 限制只能输入数字
@@ -37,6 +39,17 @@ namespace FabricDetection
         {
             Regex re = new Regex("[^0-9]+");
             e.Handled = re.IsMatch(e.Text);
+        }
+        /// <summary>
+        /// 窗口大小变化事件的回调函数
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_Resize(object sender, System.EventArgs e)
+        {
+            // 窗口大小变化后先清空所有矩形再重新绘制
+            Clear_Rect();   
+            Draw_Rect();
         }
 
     }
@@ -124,7 +137,7 @@ namespace FabricDetection
 
         public string get_curFile()
         {
-            return this.files[cur_pos]; // 返回当前文件的文件名
+            return Len==0?"":this.files[cur_pos]; // 返回当前文件的文件名
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -138,4 +151,7 @@ namespace FabricDetection
 
         public event PropertyChangedEventHandler PropertyChanged;  
     }
+
+
+
 }
