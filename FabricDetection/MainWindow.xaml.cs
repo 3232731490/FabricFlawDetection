@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-
+using System.Windows.Shapes;
 
 namespace FabricDetection
 {
@@ -18,7 +19,9 @@ namespace FabricDetection
     public partial class MainWindow : Window
     {
         MyFile myFile;
-
+        ObservableCollection<FabricInfo> FabricInfos = new ObservableCollection<FabricInfo>();  // 存储瑕疵列表
+        ObservableCollection<ListItem> KindItems = new ObservableCollection<ListItem>();    // 存储瑕疵种类
+        Dictionary<string, int> Kind2Num = new Dictionary<string, int>();   // 存储当前瑕疵种类的个数用于给瑕疵编号
         public MainWindow()
         {
             InitializeComponent();
@@ -30,6 +33,23 @@ namespace FabricDetection
             this.Img.SetBinding(Image.SourceProperty, new Binding("Image_Path") { Source = myFile });
             this.Gene_num.SetBinding(TextBox.TextProperty, new Binding("Genaration_num") {Source = myFile ,Mode = BindingMode.TwoWay });
             this.Img.MouseMove += Img_MouseMove;
+
+            KindItems.Add(new ListItem() { Kind = "擦洞" });
+            KindItems.Add(new ListItem() { Kind = "回边" });
+            KindItems.Add(new ListItem() { Kind = "解洞" });
+            KindItems.Add(new ListItem() { Kind = "跳花" });
+            KindItems.Add(new ListItem() { Kind = "织入" });
+            KindItems.Add(new ListItem() { Kind = "毛粒" });
+            KindItems.Add(new ListItem() { Kind = "愣断" });
+            KindItems.Add(new ListItem() { Kind = "毛洞" });
+            KindItems.Add(new ListItem() { Kind = "破洞" });
+            KindItems.Add(new ListItem() { Kind = "耳朵" });
+            KindItems.Add(new ListItem() { Kind = "黄渍" });
+            KindItems.Add(new ListItem() { Kind = "破边" });
+            KindItems.Add(new ListItem() { Kind = "污渍" });
+            KindItems.Add(new ListItem() { Kind = "线印" });
+
+            FabricList.ItemsSource = FabricInfos;
         }
         /// <summary>
         /// 限制只能输入数字
@@ -51,6 +71,7 @@ namespace FabricDetection
             Clear_Rect();   
             Draw_Rect();
         }
+
 
     }
 
@@ -152,6 +173,22 @@ namespace FabricDetection
         public event PropertyChangedEventHandler PropertyChanged;  
     }
 
+    public class FabricInfo : INotifyPropertyChanged
+    {
+        private bool isChecked;
+        public string KindName { get; set; }
+        public bool IsChecked { get {
+                return this.isChecked;
+            } set{
+                isChecked = value;
+                if (PropertyChanged != null)//有改变  
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("IsChecked"));//对Name进行监听  
+                }
+            } }
+        public Rectangle CurRect { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
 
 }

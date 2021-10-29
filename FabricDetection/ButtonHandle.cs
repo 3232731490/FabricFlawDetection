@@ -259,15 +259,19 @@ namespace FabricDetection
             SName.InnerText = myFile.File_Name;
             ele.AppendChild(SName);
 
-            XmlElement Sclass = doc.CreateElement("CLASS");
-            Sclass.InnerText = ComboBox1.Text;
-            ele.AppendChild(Sclass);
+            XmlElement BASEPATH = doc.CreateElement("BASEPATH");
+            BASEPATH.InnerText = myFile.File_BasePath;
+            ele.AppendChild(BASEPATH);
+
             int count = 1;
             XmlElement SPosition = doc.CreateElement("POSITION");
             // 将当前图片的瑕疵坐标全部存入XML文件
             foreach (MyRect rect in rects)
             {
                 XmlElement SPosition1 = doc.CreateElement("POSITION"+count.ToString());
+                XmlElement Sclass = doc.CreateElement("CLASS");
+                Sclass.InnerText = System.Text.RegularExpressions.Regex.Replace(rect.Kind, @"\d", "");
+                SPosition1.AppendChild(Sclass);
                 XmlElement SPositionX = doc.CreateElement("POSITIONX");
                 XmlElement SPositionY = doc.CreateElement("POSITIONY");
                 XmlElement SWidth = doc.CreateElement("WIDTH");
@@ -319,6 +323,8 @@ namespace FabricDetection
         private void read_XML()
         {
             rects.Clear();  // 先清空原有瑕疵信息
+            FabricInfos.Clear();    // 清空瑕疵列表
+            Kind2Num.Clear();
             if (this.myFile.Len == 0)
                 return;
             var names = this.myFile.File_Name.Split(".");
@@ -333,21 +339,16 @@ namespace FabricDetection
             string img_path = base_path+"\\"+temp_path+".xml";
             if (!Directory.Exists(base_path))
             {
-                this.ComboBox1.SelectedIndex = 1;
                 Directory.CreateDirectory(base_path);
                 return;
             }
             if (!File.Exists(img_path))
             {
-                this.ComboBox1.SelectedIndex = 1;
                 return;
             }
             XmlDocument doc = new XmlDocument();
             doc.Load(img_path);
             XmlNode xn = doc.SelectSingleNode("Flaw");
-
-            XmlNode Sclass = xn.SelectSingleNode("CLASS");
-            this.ComboBox1.SelectedValue = Sclass.InnerText;
 
             XmlNode SPosition = xn.SelectSingleNode("POSITION");
             XmlNodeList Postions = SPosition.ChildNodes;
@@ -358,6 +359,7 @@ namespace FabricDetection
                 XmlNode POSITIONY = posion.SelectSingleNode("POSITIONY");
                 XmlNode WIDTH = posion.SelectSingleNode("WIDTH");
                 XmlNode HEIGHT = posion.SelectSingleNode("HEIGHT");
+                XmlNode Sclass = posion.SelectSingleNode("CLASS");
                 MyRect r = new MyRect();
                 r.Start =new System.Windows.Point( double.Parse(POSITIONX.InnerText),double.Parse(POSITIONY.InnerText));
                 r.Width = double.Parse(WIDTH.InnerText);
@@ -366,10 +368,90 @@ namespace FabricDetection
                 XmlNode WindowHeight = posion.SelectSingleNode("WINDOWHEIGHT");
                 r.WindowHeight = double.Parse(WindowHeight.InnerText);
                 r.WindowWidth = double.Parse(WindowWidth.InnerText);
+                int num;
+                if (Kind2Num.TryGetValue(Sclass.InnerText, out num))
+                {
+                    r.Kind = Sclass.InnerText + num.ToString();
+                    Kind2Num.Remove(Sclass.InnerText);
+                    Kind2Num.Add(Sclass.InnerText, num + 1);
+                }
+                else
+                {
+                    Kind2Num.Add(Sclass.InnerText, 2);
+                    r.Kind = Sclass.InnerText + "1";
+                }
                 rects.Add(r);
             }
-            
             Draw_Rect();    // 绘制瑕疵区域
         }
+
+        /// <summary>
+        /// 显示隐藏瑕疵区域
+        ///     暂时没有好方法，直接重绘所有瑕疵，只是重绘，不需要删除瑕疵区域列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            FromInfoClearRect();
+            FromInfoDrawRect();
+            foreach (FabricInfo fabricInfo in FabricInfos)
+            {
+                if (!fabricInfo.IsChecked)
+                {
+                    IsAll.IsChecked = false;
+                    return;
+                }
+            }
+            IsAll.IsChecked = true;
+        }
+
+        /// <summary>
+        /// 全选/全不选
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IsAll_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox check = sender as CheckBox;
+            if ((bool)check.IsChecked)
+            {
+                foreach(FabricInfo fabricInfo in FabricInfos)
+                {
+                    fabricInfo.IsChecked = true;
+                }
+            }
+            else
+            {
+                foreach (FabricInfo fabricInfo in FabricInfos)
+                {
+                    fabricInfo.IsChecked = false;
+                }
+            }
+            FromInfoClearRect();
+            FromInfoDrawRect();
+        }
+
+
+        /// <summary>
+        /// 删除所选瑕疵区域
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("确定要删除吗所选瑕疵框吗？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.Cancel) return;
+            for (int i = 0; i < FabricInfos.Count; i++)
+            {
+                if (FabricInfos[i].IsChecked)
+                {
+                    ImageParent.Children.Remove(FabricInfos[i].CurRect);
+                    rects.Remove(Find_Rect(FabricInfos[i].CurRect));
+                    FabricInfos.Remove(FabricInfos[i]);
+                    i--;
+                }
+            }
+        }
+
     }
 }

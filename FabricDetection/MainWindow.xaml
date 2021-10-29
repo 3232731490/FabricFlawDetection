@@ -15,7 +15,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         
-        Title="瑕疵检测" Height="auto" Width="800" MinWidth="800" MinHeight="620">
+        Title="瑕疵检测" Height="auto" Width="960" MinWidth="1000" MinHeight="620">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
@@ -108,19 +108,62 @@
         <Grid Grid.Row="2">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="textBlock" Grid.Column="0" Margin="10">
+                <TextBlock x:Name="textBlock" Grid.Column="1" Margin="10">
                     <Canvas Name="ImageParent">
-                        <!--- MouseMove="Img_MouseMove" MouseUp="Img_MouseLeftButtonUp"-->
                         <Image x:Name="Img" Source="C:\Users\32327\Pictures\photo_1.jpg"  MouseLeftButtonDown="Img_MouseLeftButtonDown"  Width="{Binding ActualWidth, ElementName=textBlock, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=textBlock, Mode=OneWay}" Stretch="Fill"/>
                     </Canvas>
                 </TextBlock>
-                <Grid Grid.Column="1">
+                <Border Grid.Column="2" Margin="5" BorderBrush="LightSteelBlue" BorderThickness="2,2,2,2">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="1*"></RowDefinition>
+                            <RowDefinition Height="60"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16">瑕疵区域列表</TextBlock>
+                        </Grid>
+                        <CheckBox Name="IsAll" Click="IsAll_Click" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" FontWeight="Bold" FontSize="16" Grid.Row="1" Content="全选"></CheckBox>
+                        <Grid Grid.Row="2">
+                            <ListBox Grid.Row="2" Name="FabricList" HorizontalContentAlignment="Stretch"  >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="3" Orientation="Horizontal" Name="Fabric_Stack" >
+                                            <CheckBox IsChecked="{Binding IsChecked}" Click="CheckBox_Click" Margin="10,0"/>
+                                            <TextBlock Width="{Binding ActualWidth, ElementName=FabricList, Mode=OneWay}" Name="FabricItem" MouseEnter="FabricItem_MouseEnter" MouseLeave="FabricItem_MouseLeave" Text="{Binding KindName}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" ></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Button
+                                        Name="Delete"
+                                        Grid.Row="1"
+                              Width="auto"
+                              ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                              materialDesign:RippleAssist.IsDisabled="True"
+                              Content="删除区域"
+                              IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                                  Style="{DynamicResource MaterialDesignRaisedButton}"
+  materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                Margin="10"
+                              HorizontalAlignment="Center"
+                                Background="#FF7FBB36" BorderBrush="#FFA4D18B" Cursor="Hand" Click="Delete_Click"
+                                />
+                        </Grid>
+                    </Grid>
+                </Border>
+                
+                <Grid Grid.Column="0" Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!--<RowDefinition Height="50"></RowDefinition>-->
                             <RowDefinition Height="3*"></RowDefinition>
                             <RowDefinition Height="3*"></RowDefinition>
                             <RowDefinition Height="5*"></RowDefinition>
@@ -129,7 +172,7 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.ColumnSpan="2">
+                        <!--<Grid Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"></ColumnDefinition>
                                 <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -146,8 +189,8 @@
                                     Tag="不合格"
                               Content="不合格" />
                             </ComboBox>
-                        </Grid>
-                        <Grid Margin="10" Grid.Row="1" Grid.ColumnSpan="2">
+                        </Grid>-->
+                        <Grid Margin="10" Grid.Row="0" Grid.ColumnSpan="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -186,7 +229,7 @@
                             </Grid>
 
                         </Grid>
-                        <Grid Margin="10" Grid.Row="2" Grid.ColumnSpan="2">
+                        <Grid Margin="10" Grid.Row="1" Grid.ColumnSpan="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -224,7 +267,7 @@
                                 </Button>
                             </Grid>
                         </Grid>
-                        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                        <Grid Grid.Row="2" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"></RowDefinition>
                                 <RowDefinition Height="1*"></RowDefinition>
