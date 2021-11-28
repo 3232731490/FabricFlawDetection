@@ -239,7 +239,7 @@
                                     <RowDefinition Height="3*"></RowDefinition>
                                     <RowDefinition Height="1*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <TextBlock HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="5" FontWeight="Bold">完成框选</TextBlock>
+                                <TextBlock HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="5" FontWeight="Bold">结束框选</TextBlock>
                                 <Button
                                     Name="Completed"
                                     Grid.Column="0"

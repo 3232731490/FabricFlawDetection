@@ -36,4 +36,3 @@ C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\bin\Debug\net5.0-windo
 C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\obj\Debug\net5.0-windows\MyDialog.g.cs
 C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\obj\Debug\net5.0-windows\MyDialog.baml
 C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\obj\Debug\net5.0-windows\FabricDetection.csproj.AssemblyReference.cache
-C:\Users\32327\Desktop\C#\FabricDetection\FabricDetection\obj\Debug\net5.0-windows\FabricDetection.csproj.CopyComplete
